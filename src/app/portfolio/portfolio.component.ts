@@ -12,7 +12,7 @@ import { PortfolioModalComponent } from './portfolio-modal/portfolio-modal.compo
     MatCardModule,
     FloatInOnScrollDirective,
     MatDialogModule
-],
+  ],
   templateUrl: './portfolio.component.html',
   styleUrls: ['./portfolio.component.scss']
 })
