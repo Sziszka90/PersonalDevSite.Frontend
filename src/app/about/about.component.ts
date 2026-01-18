@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { TypingAnimationDirective } from '../../directives/typewriter/typing-animation.directive';
 import { FloatInOnScrollDirective } from '../directives/float-in.directive';
-import { CommonModule } from '@angular/common';
+
 import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [CommonModule, TypingAnimationDirective, FloatInOnScrollDirective],
+  imports: [TypingAnimationDirective, FloatInOnScrollDirective],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
 })

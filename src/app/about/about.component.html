@@ -1,136 +1,144 @@
 <section id="about">
-    <div appFloatInOnScroll class="component-container">
-        <div class="light-border">
-            <div class="main-container text-color-green">
-                <div class="row-container">
-                    <div appFloatInOnScroll class="left-column">
-                        <div class="typewriter-container">
-                            <span class="title-font ">&lt;span&gt;</span>
-                            <span class="text-color-grey title-font " 
-                                    typingAnimation 
-                                    [typeSpeed]="200" 
-                                    [startDelay]="2000" 
-                                    [condition]="start"
-                                    [text]='"Hi, I&#39;m Szilard"'>                         
-                            </span>
-                            <span class="title-font">&lt;/span&gt;</span>
-                        </div>           
-                        <div class="intoduction text-color-grey title-font " ><span class="gradient-text">&#123;  Full Stack &#125;</span>  Software Engineer</div>
-                        <div class="introduction-summary title-font  text-color-grey"><span>&lt;p&gt;</span>I leverage modern technologies like <span>.NET</span>, <span>Angular</span> and <span>DevOps</span> practices to build web solutions that are reliable, scalable, and forward-thinking.<span>&lt;/p&gt;</span></div>
-                        
-                        <div class="links">
-                            <button disabled class="bounce-button custom-button default-font resume">
-                                <a href="assets/Ferencz_Szilard_CV.pdf" download="SzilardFerencz-CV">
-                                    <div class="download-button">
-                                        <span><i class="fa-solid fa-download"></i> [CV]</span>
-                                    </div>
-                                </a>
-                            </button>
-                            <button class="bounce-button custom-button default-font github">
-                                <a href="https://github.com/Sziszka90" target="_blank" rel="noopener noreferrer">
-                                    <div class="github-button">
-                                        <span><i class="fa-brands fa-github"></i></span>
-                                    </div>
-                                </a>
-                            </button>
-                            <button class="bounce-button custom-button default-font linkdin">
-                                <a href="https://www.linkedin.com/in/szilard-ferencz/" target="_blank" rel="noopener noreferrer">
-                                    <div class="linkdin-button">
-                                        <span><i class="fa-brands fa-linkedin"></i></span>
-                                    </div>
-                                </a>
-                            </button>
-                        </div>
-                    </div>
-                    <div appFloatInOnScroll class="right-column default-font">
-                        <div *ngIf="showLearn" class="learn-animation">
-                            <span>Learn...</span>
-                        </div>
-                        <div *ngIf="showBuild" class="build-animation">
-                            <span>Build...</span>
-                        </div>
-                        <div *ngIf="showDeploy" class="progress-bar-animation">                         
-                            <div class="progress-bar-bg">
-                                <div class="progress-bar-fill"></div>
-                            </div>
-                            <span>Deploy...</span>
-                        </div>
-                        <div *ngIf="showDone" class="progress-bar-tick">                          
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="12" fill="#43b581"/>
-                                <path d="M7 13.5L10.5 17L17 10.5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <div>Done!</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="block-container">
-                    <div class="icon-carousel">
-                        <div class="carousel-track">
-                            <i class="fas fa-code"></i>
-                            <i class="fa-brands fa-angular"></i>
-                            <i class="fa-brands fa-js"></i>
-                            <i class="fa-brands fa-git"></i>
-                            <i class="fa-brands fa-html5"></i>
-                            <i class="fa-brands fa-css3-alt"></i>
-                            <i class="fas fa-code"></i>
-                            <i class="fa-brands fa-angular"></i>
-                            <i class="fa-brands fa-js"></i>
-                            <i class="fa-brands fa-git"></i>
-                            <i class="fa-brands fa-html5"></i>
-                            <i class="fa-brands fa-css3-alt"></i>
-                            <i class="fas fa-code"></i>
-                            <i class="fa-brands fa-angular"></i>
-                            <i class="fa-brands fa-js"></i>
-                            <i class="fa-brands fa-git"></i>
-                            <i class="fa-brands fa-html5"></i>
-                            <i class="fa-brands fa-css3-alt"></i>
-                            <i class="fas fa-code"></i>
-                            <i class="fa-brands fa-angular"></i>
-                            <i class="fa-brands fa-js"></i>
-                            <i class="fa-brands fa-git"></i>
-                            <i class="fa-brands fa-html5"></i>
-                            <i class="fa-brands fa-css3-alt"></i>
-                            <i class="fas fa-code"></i>
-                            <i class="fa-brands fa-angular"></i>
-                            <i class="fa-brands fa-js"></i>
-                            <i class="fa-brands fa-git"></i>
-                            <i class="fa-brands fa-html5"></i>
-                            <i class="fa-brands fa-css3-alt"></i>
-                            <i class="fas fa-code"></i>
-                            <i class="fa-brands fa-angular"></i>
-                            <i class="fa-brands fa-js"></i>
-                            <i class="fa-brands fa-git"></i>
-                            <i class="fa-brands fa-html5"></i>
-                            <i class="fa-brands fa-css3-alt"></i>
-                            <i class="fas fa-code"></i>
-                            <i class="fa-brands fa-angular"></i>
-                            <i class="fa-brands fa-js"></i>
-                            <i class="fa-brands fa-git"></i>
-                            <i class="fa-brands fa-html5"></i>
-                            <i class="fa-brands fa-css3-alt"></i>
-                            <i class="fas fa-code"></i>
-                            <i class="fa-brands fa-angular"></i>
-                            <i class="fa-brands fa-js"></i>
-                            <i class="fa-brands fa-git"></i>
-                            <i class="fa-brands fa-html5"></i>
-                            <i class="fa-brands fa-css3-alt"></i>
-                            <i class="fas fa-code"></i>
-                            <i class="fa-brands fa-angular"></i>
-                            <i class="fa-brands fa-js"></i>
-                            <i class="fa-brands fa-git"></i>
-                            <i class="fa-brands fa-html5"></i>
-                            <i class="fa-brands fa-css3-alt"></i>
-                            <i class="fas fa-code"></i>
-                            <i class="fa-brands fa-angular"></i>
-                            <i class="fa-brands fa-js"></i>
-                            <i class="fa-brands fa-git"></i>
-                            <i class="fa-brands fa-html5"></i>
-                            <i class="fa-brands fa-css3-alt"></i>
-                        </div>
-                    </div>
-                </div>
+  <div appFloatInOnScroll class="component-container">
+    <div class="light-border">
+      <div class="main-container text-color-green">
+        <div class="row-container">
+          <div appFloatInOnScroll class="left-column">
+            <div class="typewriter-container">
+              <span class="title-font ">&lt;span&gt;</span>
+              <span class="text-color-grey title-font "
+                typingAnimation
+                [typeSpeed]="200"
+                [startDelay]="2000"
+                [condition]="start"
+                [text]='"Hi, I&#39;m Szilard"'>
+              </span>
+              <span class="title-font">&lt;/span&gt;</span>
             </div>
+            <div class="intoduction text-color-grey title-font " ><span class="gradient-text">&#123;  Full Stack &#125;</span>  Software Engineer</div>
+            <div class="introduction-summary title-font  text-color-grey"><span>&lt;p&gt;</span>I leverage modern technologies like <span>.NET</span>, <span>Angular</span> and <span>DevOps</span> practices to build web solutions that are reliable, scalable, and forward-thinking.<span>&lt;/p&gt;</span></div>
+
+            <div class="links">
+              <button disabled class="bounce-button custom-button default-font resume">
+                <a href="assets/Ferencz_Szilard_CV.pdf" download="SzilardFerencz-CV">
+                  <div class="download-button">
+                    <span><i class="fa-solid fa-download"></i> [CV]</span>
+                  </div>
+                </a>
+              </button>
+              <button class="bounce-button custom-button default-font github">
+                <a href="https://github.com/Sziszka90" target="_blank" rel="noopener noreferrer">
+                  <div class="github-button">
+                    <span><i class="fa-brands fa-github"></i></span>
+                  </div>
+                </a>
+              </button>
+              <button class="bounce-button custom-button default-font linkdin">
+                <a href="https://www.linkedin.com/in/szilard-ferencz/" target="_blank" rel="noopener noreferrer">
+                  <div class="linkdin-button">
+                    <span><i class="fa-brands fa-linkedin"></i></span>
+                  </div>
+                </a>
+              </button>
+            </div>
+          </div>
+          <div appFloatInOnScroll class="right-column default-font">
+            @if (showLearn) {
+              <div class="learn-animation">
+                <span>Learn...</span>
+              </div>
+            }
+            @if (showBuild) {
+              <div class="build-animation">
+                <span>Build...</span>
+              </div>
+            }
+            @if (showDeploy) {
+              <div class="progress-bar-animation">
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill"></div>
+                </div>
+                <span>Deploy...</span>
+              </div>
+            }
+            @if (showDone) {
+              <div class="progress-bar-tick">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="12" fill="#43b581"/>
+                  <path d="M7 13.5L10.5 17L17 10.5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div>Done!</div>
+              </div>
+            }
+          </div>
         </div>
+        <div class="block-container">
+          <div class="icon-carousel">
+            <div class="carousel-track">
+              <i class="fas fa-code"></i>
+              <i class="fa-brands fa-angular"></i>
+              <i class="fa-brands fa-js"></i>
+              <i class="fa-brands fa-git"></i>
+              <i class="fa-brands fa-html5"></i>
+              <i class="fa-brands fa-css3-alt"></i>
+              <i class="fas fa-code"></i>
+              <i class="fa-brands fa-angular"></i>
+              <i class="fa-brands fa-js"></i>
+              <i class="fa-brands fa-git"></i>
+              <i class="fa-brands fa-html5"></i>
+              <i class="fa-brands fa-css3-alt"></i>
+              <i class="fas fa-code"></i>
+              <i class="fa-brands fa-angular"></i>
+              <i class="fa-brands fa-js"></i>
+              <i class="fa-brands fa-git"></i>
+              <i class="fa-brands fa-html5"></i>
+              <i class="fa-brands fa-css3-alt"></i>
+              <i class="fas fa-code"></i>
+              <i class="fa-brands fa-angular"></i>
+              <i class="fa-brands fa-js"></i>
+              <i class="fa-brands fa-git"></i>
+              <i class="fa-brands fa-html5"></i>
+              <i class="fa-brands fa-css3-alt"></i>
+              <i class="fas fa-code"></i>
+              <i class="fa-brands fa-angular"></i>
+              <i class="fa-brands fa-js"></i>
+              <i class="fa-brands fa-git"></i>
+              <i class="fa-brands fa-html5"></i>
+              <i class="fa-brands fa-css3-alt"></i>
+              <i class="fas fa-code"></i>
+              <i class="fa-brands fa-angular"></i>
+              <i class="fa-brands fa-js"></i>
+              <i class="fa-brands fa-git"></i>
+              <i class="fa-brands fa-html5"></i>
+              <i class="fa-brands fa-css3-alt"></i>
+              <i class="fas fa-code"></i>
+              <i class="fa-brands fa-angular"></i>
+              <i class="fa-brands fa-js"></i>
+              <i class="fa-brands fa-git"></i>
+              <i class="fa-brands fa-html5"></i>
+              <i class="fa-brands fa-css3-alt"></i>
+              <i class="fas fa-code"></i>
+              <i class="fa-brands fa-angular"></i>
+              <i class="fa-brands fa-js"></i>
+              <i class="fa-brands fa-git"></i>
+              <i class="fa-brands fa-html5"></i>
+              <i class="fa-brands fa-css3-alt"></i>
+              <i class="fas fa-code"></i>
+              <i class="fa-brands fa-angular"></i>
+              <i class="fa-brands fa-js"></i>
+              <i class="fa-brands fa-git"></i>
+              <i class="fa-brands fa-html5"></i>
+              <i class="fa-brands fa-css3-alt"></i>
+              <i class="fas fa-code"></i>
+              <i class="fa-brands fa-angular"></i>
+              <i class="fa-brands fa-js"></i>
+              <i class="fa-brands fa-git"></i>
+              <i class="fa-brands fa-html5"></i>
+              <i class="fa-brands fa-css3-alt"></i>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>

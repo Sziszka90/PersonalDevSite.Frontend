@@ -1,17 +1,18 @@
 <section id="skills">
-    <div class="component-container">
-        <div class="light-border">
-            <div class="main-container">
-                <h2>Technical Skills</h2>
-                <div class="skills">
-                    <div class="bubble" 
-                        *ngFor="let skill of positionedSkills; let i = index"
-                        [ngStyle]="{ '--i': i }">
-                        <img [src]="skill.img" [alt]="skill.name" /> 
-                        <span class="bubble-label">{{ skill.name }}</span>
-                    </div>
-                </div>
+  <div class="component-container">
+    <div class="light-border">
+      <div class="main-container">
+        <h2>Technical Skills</h2>
+        <div class="skills">
+          @for (skill of positionedSkills; track skill; let i = $index) {
+            <div class="bubble"
+              [ngStyle]="{ '--i': i }">
+              <img [src]="skill.img" [alt]="skill.name" />
+              <span class="bubble-label">{{ skill.name }}</span>
             </div>
+          }
         </div>
+      </div>
     </div>
+  </div>
 </section>
