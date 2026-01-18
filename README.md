@@ -3,10 +3,9 @@
 My personal developer website built with **Angular 19** and **SCSS**. It highlights my projects, skills, and professional background.
 
 ## 🚀 Tech Stack
-- Angular 19 + Angular CLI  
+- Angular 21 
 - TypeScript  
-- SCSS (modular: variables & mixins)  
-- HTML5 / CSS3  
+- HTML5 / SCSS  
 
 
 ## 🛠️ Getting Started
