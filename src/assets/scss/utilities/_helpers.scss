@@ -22,24 +22,29 @@ li {
 .light-border {
     position: relative;
     padding: 2px;
-    border: 2px solid transparent;
-    background-clip: padding-box;
     border-radius: 10px;
     overflow: hidden;
+  isolation: isolate;
 }
 
 .light-border::before {
     content: '';
     position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
+  inset: 0;
+  padding: 2px;
     background: linear-gradient(90deg, transparent, variables.$green-color, transparent);
-    border-radius: 10px;
-    z-index: 1;
+  border-radius: inherit;
     animation: border-light 5s linear infinite;
     background-size: 300% 300%;
+  pointer-events: none;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
 }
 
 @keyframes border-light {
