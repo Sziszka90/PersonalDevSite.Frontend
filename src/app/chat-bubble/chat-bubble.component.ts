@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, signal } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -18,11 +18,11 @@ export class ChatBubbleComponent {
   apiService = inject(ApiService);
   message = '';
   response = '';
-  loading = false;
+  loading = signal(false);
   showBubble = false;
-  messages: { text: string, sender: 'user' | 'assistant' }[] = [
+  messages = signal<{ text: string, sender: 'user' | 'assistant' }[]>([
     { text: 'Hi! Welcome to my personal website. Feel free to ask me anything about my experience, skills, or projects!', sender: 'assistant' }
-  ];
+  ]);
   dragOffsetX = 0;
   dragOffsetY = 0;
   dragging = false;
@@ -67,27 +67,58 @@ export class ChatBubbleComponent {
   }
 
   sendMessage() {
-    if (!this.message.trim() || this.loading) return;
+    if (!this.message.trim() || this.loading()) return;
     const msgToSend = this.message;
     this.message = '';
-    this.loading = true;
-    this.messages.push({ text: msgToSend, sender: 'user' });
-    const assistantMessage = { text: '', sender: 'assistant' as const };
-    this.messages.push(assistantMessage);
+    this.loading.set(true);
+    const assistantMessageIndex = this.messages().length + 1;
+    this.messages.update(messages => [
+      ...messages,
+      { text: msgToSend, sender: 'user' },
+      { text: '', sender: 'assistant' }
+    ]);
     this.scrollToBottom();
 
     this.apiService.streamChat(msgToSend, delta => {
-      assistantMessage.text += delta;
+      this.messages.update(messages => {
+        const updatedMessages = [...messages];
+        const assistantMessage = updatedMessages[assistantMessageIndex];
+        if (assistantMessage) {
+          updatedMessages[assistantMessageIndex] = {
+            ...assistantMessage,
+            text: assistantMessage.text + delta
+          };
+        }
+        return updatedMessages;
+      });
       this.scrollToBottom();
     }).then(() => {
-      if (!assistantMessage.text) {
-        assistantMessage.text = 'No response';
-      }
-      this.loading = false;
+      this.messages.update(messages => {
+        const updatedMessages = [...messages];
+        const assistantMessage = updatedMessages[assistantMessageIndex];
+        if (assistantMessage && !assistantMessage.text) {
+          updatedMessages[assistantMessageIndex] = {
+            ...assistantMessage,
+            text: 'No response'
+          };
+        }
+        return updatedMessages;
+      });
+      this.loading.set(false);
       this.scrollToBottom();
     }).catch(() => {
-      assistantMessage.text = assistantMessage.text || 'Error sending message.';
-      this.loading = false;
+      this.messages.update(messages => {
+        const updatedMessages = [...messages];
+        const assistantMessage = updatedMessages[assistantMessageIndex];
+        if (assistantMessage && !assistantMessage.text) {
+          updatedMessages[assistantMessageIndex] = {
+            ...assistantMessage,
+            text: 'Error sending message.'
+          };
+        }
+        return updatedMessages;
+      });
+      this.loading.set(false);
       this.scrollToBottom();
     });
   }
