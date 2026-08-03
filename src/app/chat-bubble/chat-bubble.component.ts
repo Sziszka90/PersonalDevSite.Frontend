@@ -1,6 +1,5 @@
 import { Component, inject, ViewChild, ElementRef } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { Conversation } from '../../models/conversation.dto';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -68,24 +67,28 @@ export class ChatBubbleComponent {
   }
 
   sendMessage() {
-    if (!this.message.trim()) return;
+    if (!this.message.trim() || this.loading) return;
     const msgToSend = this.message;
     this.message = '';
     this.loading = true;
     this.messages.push({ text: msgToSend, sender: 'user' });
+    const assistantMessage = { text: '', sender: 'assistant' as const };
+    this.messages.push(assistantMessage);
     this.scrollToBottom();
-    this.apiService.post<Conversation>({ message: msgToSend }).subscribe({
-      next: res => {
-        const reply = res.message || (res as any).Message || 'No response';
-        this.messages.push({ text: reply, sender: 'assistant' });
-        this.loading = false;
-        this.scrollToBottom();
-      },
-      error: err => {
-        this.messages.push({ text: 'Error sending message.', sender: 'assistant' });
-        this.loading = false;
-        this.scrollToBottom();
+
+    this.apiService.streamChat(msgToSend, delta => {
+      assistantMessage.text += delta;
+      this.scrollToBottom();
+    }).then(() => {
+      if (!assistantMessage.text) {
+        assistantMessage.text = 'No response';
       }
+      this.loading = false;
+      this.scrollToBottom();
+    }).catch(() => {
+      assistantMessage.text = assistantMessage.text || 'Error sending message.';
+      this.loading = false;
+      this.scrollToBottom();
     });
   }
 
