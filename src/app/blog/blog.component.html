@@ -1,0 +1,86 @@
+<section id="blog" aria-labelledby="blog-title">
+  <div class="component-container">
+    <div class="light-border">
+      <div class="main-container">
+        <div class="section-heading">
+          <span class="eyebrow default-font">From Medium</span>
+          <h2 id="blog-title">Blog</h2>
+          <a class="medium-link default-font" [href]="mediumProfileUrl" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-medium" aria-hidden="true"></i>
+            Visit my Medium profile
+          </a>
+        </div>
+
+        @if (loading()) {
+          <p class="feed-status default-font" aria-live="polite">Loading posts...</p>
+        } @else if (feedUnavailable()) {
+          <div class="feed-status default-font" aria-live="polite">
+            <p>Medium posts are temporarily unavailable. Please check back soon.</p>
+          </div>
+        } @else if (feedUnavailable()) {
+          <div class="feed-status default-font" aria-live="polite">
+            <p>Medium posts are temporarily unavailable. Please check back soon.</p>
+          </div>
+        } @else {
+          @if (featuredPost(); as post) {
+            <article class="featured-post blog-card">
+              @if (post.thumbnail) {
+                <img class="post-image" [src]="post.thumbnail" [alt]="post.title" loading="lazy">
+              }
+              <div class="post-content">
+                <span class="featured-label default-font">Featured project</span>
+                <time class="post-date default-font" [attr.datetime]="post.pubDate">
+                  {{ post.pubDate | date: 'MMM d, y' }}
+                </time>
+                <h3>{{ post.title }}</h3>
+                @if (post.description) {
+                  <p class="post-description default-font">{{ post.description }}</p>
+                }
+                <div class="project-actions">
+                  <button class="custom-button bounce-button" (click)="openPortfolioModal()">
+                    <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                    View Project
+                  </button>
+                  <a class="custom-button bounce-button" href="assets/fake_bank_transactions.csv" download="fake_bank_transactions">
+                    <i class="fa-solid fa-download" aria-hidden="true"></i>
+                    Sample CSV
+                  </a>
+                </div>
+                <a class="read-link default-font" [href]="post.link" target="_blank" rel="noopener noreferrer">
+                  Read article
+                  <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                </a>
+              </div>
+            </article>
+          }
+
+          @if (posts().length > 0) {
+            <h3 class="recent-heading">Recent posts</h3>
+          }
+          <div class="blog-grid">
+            @for (post of posts(); track post.link) {
+              <article class="blog-card">
+                @if (post.thumbnail) {
+                  <img class="post-image" [src]="post.thumbnail" [alt]="post.title" loading="lazy">
+                }
+                <div class="post-content">
+                  <time class="post-date default-font" [attr.datetime]="post.pubDate">
+                    {{ post.pubDate | date: 'MMM d, y' }}
+                  </time>
+                  <h3>{{ post.title }}</h3>
+                  @if (post.description) {
+                    <p class="post-description default-font">{{ post.description }}</p>
+                  }
+                  <a class="read-link default-font" [href]="post.link" target="_blank" rel="noopener noreferrer">
+                    Read article
+                    <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </article>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

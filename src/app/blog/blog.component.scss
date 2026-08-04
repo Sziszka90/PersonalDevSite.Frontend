@@ -1,0 +1,205 @@
+@use 'base/variables' as variables;
+
+.light-border {
+  width: 100%;
+}
+
+.main-container {
+  padding: 2rem;
+}
+
+.section-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.eyebrow {
+  color: variables.$text-color;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+h2 {
+  color: variables.$green-color;
+  font-size: 3rem;
+  line-height: 1.1;
+  margin: 0.5rem 0 1.25rem;
+  text-align: center;
+}
+
+.medium-link,
+.read-link,
+.feed-status a {
+  color: variables.$text-color;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.medium-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.medium-link:hover,
+.read-link:hover,
+.feed-status a:hover {
+  color: variables.$green-color;
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.featured-post {
+  display: grid;
+  grid-template-columns: minmax(200px, 0.75fr) minmax(0, 1.25fr);
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2.5rem;
+  border-color: variables.$green-color;
+  box-shadow: 0 12px 32px rgba(46, 153, 138, 0.18);
+}
+
+.featured-post .post-image {
+  height: 100%;
+  min-height: 210px;
+}
+
+.featured-post .post-content {
+  padding: 1rem 1.25rem;
+}
+
+.featured-post h3 {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+}
+
+.featured-post .post-description {
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.featured-label {
+  color: variables.$green-color;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+}
+
+.recent-heading {
+  color: variables.$green-color;
+  font-size: 1.5rem;
+  margin: 0 0 1rem;
+}
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  background: variables.$secondary-color;
+  border: 1px solid rgba(209, 209, 214, 0.14);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.blog-card:hover {
+  border-color: variables.$green-color;
+  transform: translateY(-4px);
+}
+
+.post-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.post-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.25rem;
+}
+
+.post-date {
+  color: variables.$green-color;
+  font-size: 0.75rem;
+}
+
+h3 {
+  color: variables.$text-color;
+  font-size: 1.25rem;
+  line-height: 1.35;
+  margin: 0.75rem 0;
+}
+
+.post-description {
+  color: variables.$text-color;
+  font-size: 0.9rem;
+  margin: 0 0 1.25rem;
+  opacity: 0.8;
+}
+
+.project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.project-actions .custom-button {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.read-link {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.5rem;
+  margin-top: auto;
+  font-size: 0.85rem;
+}
+
+.feed-status {
+  color: variables.$text-color;
+  margin: 0 auto;
+  max-width: 34rem;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.feed-status p {
+  margin: 0 0 1rem;
+}
+
+@media (max-width: 800px) {
+  .featured-post {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .main-container {
+    padding: 2rem 1rem;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+  }
+}

@@ -21,7 +21,6 @@ export class SkillsComponent {
     { name: 'Kubernetes', img: 'assets/Kubernetes.png' },
     { name: 'Helm', img: 'assets/Helm.png' },
     { name: 'GitHub', img: 'assets/GitHub.png' },
-    { name: 'Python', img: 'assets/Python.png' },
 
   ];
 }

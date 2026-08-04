@@ -6,7 +6,7 @@ import { ExperiencesComponent } from './experiences/experiences.component';
 import { ContactComponent } from './contact/contact.component';
 import { SkillsComponent } from './skills/skills.component';
 import { ChatBubbleComponent } from './chat-bubble/chat-bubble.component';
-import { PortfolioComponent } from './portfolio/portfolio.component';
+import { BlogComponent } from './blog/blog.component';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,7 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
     AboutComponent, 
     AreasComponent, 
     ExperiencesComponent,
-    PortfolioComponent,
+    BlogComponent,
     ContactComponent,
     SkillsComponent,
     ChatBubbleComponent
