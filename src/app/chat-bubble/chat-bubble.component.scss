@@ -23,7 +23,14 @@
   position: relative;
   overflow: visible;
   z-index: 1100;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
 }
+
+.chat-toggle.dragging { cursor: grabbing; }
 
 .chat-toggle:focus { outline: 2px solid rgba(255,255,255,0.12); }
 

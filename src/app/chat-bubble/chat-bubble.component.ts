@@ -27,29 +27,27 @@ export class ChatBubbleComponent {
   dragOffsetY = 0;
   dragging = false;
   bubblePosition = { top: 100, right: 32 };
-  touchStartTime = 0;
   touchStartX = 0;
   touchStartY = 0;
   touchMoved = false;
+  suppressClick = false;
+  pointerId: number | null = null;
 
   private _handleDocumentClick!: (e: MouseEvent) => void;
-  private _mouseMoveHandler!: (e: MouseEvent) => void;
-  private _mouseUpHandler!: (e: MouseEvent) => void;
-  private _touchMoveHandler!: (e: TouchEvent) => void;
-  private _touchEndHandler!: (e: TouchEvent) => void;
+  private _pointerMoveHandler!: (e: PointerEvent) => void;
+  private _pointerUpHandler!: (e: PointerEvent) => void;
 
   constructor() {
     this._handleDocumentClick = this.handleDocumentClick.bind(this);
-    this._mouseMoveHandler = this.onDragMove.bind(this) as unknown as (e: MouseEvent) => void;
-    this._mouseUpHandler = this.onDragEnd.bind(this) as unknown as (e: MouseEvent) => void;
-    this._touchMoveHandler = this.onDragMove.bind(this) as unknown as (e: TouchEvent) => void;
-    this._touchEndHandler = this.onDragEnd.bind(this) as unknown as (e: TouchEvent) => void;
+    this._pointerMoveHandler = this.onDragMove.bind(this);
+    this._pointerUpHandler = this.onPointerEnd.bind(this);
 
     document.addEventListener('click', this._handleDocumentClick);
   }
 
   ngOnDestroy() {
     document.removeEventListener('click', this._handleDocumentClick);
+    this.onDragEnd();
   }
 
   handleDocumentClick(event: MouseEvent) {
@@ -127,35 +125,41 @@ export class ChatBubbleComponent {
     this.showBubble = !this.showBubble;
   }
 
-  onDragStart(event: MouseEvent | TouchEvent) {
-    this.dragging = true;
-    if (event instanceof TouchEvent) {
+  onToggleClick(event: MouseEvent) {
+    if (this.suppressClick) {
       event.preventDefault();
-      this.dragOffsetX = event.touches[0].clientX;
-      this.dragOffsetY = event.touches[0].clientY;
-      document.addEventListener('touchmove', this._touchMoveHandler, { passive: false });
-      document.addEventListener('touchend', this._touchEndHandler);
-    } else {
-      this.dragOffsetX = event.clientX;
-      this.dragOffsetY = event.clientY;
-      document.addEventListener('mousemove', this._mouseMoveHandler);
-      document.addEventListener('mouseup', this._mouseUpHandler);
+      this.suppressClick = false;
+      return;
     }
+    this.toggleBubble();
   }
 
-  onDragMove(event: MouseEvent | TouchEvent) {
-    if (!this.dragging) return;
-    if (event instanceof TouchEvent) {
-      event.preventDefault();
+  onPointerStart(event: PointerEvent) {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+
+    this.dragging = true;
+    this.pointerId = event.pointerId;
+    this.dragOffsetX = event.clientX;
+    this.dragOffsetY = event.clientY;
+    this.touchStartX = event.clientX;
+    this.touchStartY = event.clientY;
+    this.touchMoved = false;
+    document.addEventListener('pointermove', this._pointerMoveHandler, { passive: false });
+    document.addEventListener('pointerup', this._pointerUpHandler);
+    document.addEventListener('pointercancel', this._pointerUpHandler);
+  }
+
+  onDragMove(event: PointerEvent) {
+    if (!this.dragging || event.pointerId !== this.pointerId) return;
+    event.preventDefault();
+    const clientX = event.clientX;
+    const clientY = event.clientY;
+    const totalDx = clientX - this.touchStartX;
+    const totalDy = clientY - this.touchStartY;
+    if (Math.abs(totalDx) > 10 || Math.abs(totalDy) > 10) {
+      this.touchMoved = true;
     }
-    let clientX, clientY;
-    if (event instanceof TouchEvent) {
-      clientX = event.touches[0].clientX;
-      clientY = event.touches[0].clientY;
-    } else {
-      clientX = event.clientX;
-      clientY = event.clientY;
-    }
+
     const dx = clientX - this.dragOffsetX;
     const dy = clientY - this.dragOffsetY;
     if (this.chatBubble) {
@@ -180,37 +184,18 @@ export class ChatBubbleComponent {
     this.dragOffsetY = clientY;
   }
 
+  onPointerEnd(event: PointerEvent) {
+    if (event.pointerId !== this.pointerId) return;
+    this.suppressClick = this.touchMoved;
+    this.onDragEnd();
+  }
+
   onDragEnd() {
     this.dragging = false;
-    document.removeEventListener('mousemove', this._mouseMoveHandler);
-    document.removeEventListener('mouseup', this._mouseUpHandler);
-    document.removeEventListener('touchmove', this._touchMoveHandler);
-    document.removeEventListener('touchend', this._touchEndHandler);
-  }
-
-  onTouchStart(event: TouchEvent) {
-    this.touchStartTime = Date.now();
-    this.touchStartX = event.touches[0].clientX;
-    this.touchStartY = event.touches[0].clientY;
-    this.touchMoved = false;
-    this.onDragStart(event);
-  }
-
-  onTouchMove(event: TouchEvent) {
-    const dx = event.touches[0].clientX - this.touchStartX;
-    const dy = event.touches[0].clientY - this.touchStartY;
-    if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
-      this.touchMoved = true;
-    }
-    this.onDragMove(event);
-  }
-
-  onTouchEnd(event: TouchEvent) {
-    this.onDragEnd();
-    const tapDuration = Date.now() - this.touchStartTime;
-    if (!this.touchMoved && tapDuration < 300) {
-      this.toggleBubble();
-    }
+    this.pointerId = null;
+    document.removeEventListener('pointermove', this._pointerMoveHandler);
+    document.removeEventListener('pointerup', this._pointerUpHandler);
+    document.removeEventListener('pointercancel', this._pointerUpHandler);
   }
 
   onTextareaKeydown(event: KeyboardEvent) {

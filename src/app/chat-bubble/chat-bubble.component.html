@@ -1,11 +1,9 @@
 <div #chatBubble class="chat-bubble" [class.open]="showBubble"
   [ngStyle]="{top: bubblePosition.top + 'px', right: bubblePosition.right + 'px'}">
   <button class="chat-toggle"
-    (click)="toggleBubble()"
-    (mousedown)="onDragStart($event)"
-    (touchstart)="onTouchStart($event)"
-    (touchmove)="onTouchMove($event)"
-    (touchend)="onTouchEnd($event)">
+    [class.dragging]="dragging"
+    (click)="onToggleClick($event)"
+    (pointerdown)="onPointerStart($event)">
     <span class="chat-icon" [class.pulsing]="!showBubble" aria-hidden="true">💬</span>
     @if (!showBubble) {
       <span class="pulse" aria-hidden="true"></span>
