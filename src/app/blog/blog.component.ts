@@ -43,9 +43,10 @@ export class BlogComponent implements OnInit {
           PORTFOLIO_POST_URL,
           ...this.extractPostLinks(feed)
         ].filter((link, index, links) => links.indexOf(link) === index);
+        const feedThumbnails = this.extractFeedThumbnails(feed);
 
         forkJoin(postLinks.map(link => this.http.get(this.readerUrl(link), { responseType: 'text' }).pipe(
-          map(article => this.parsePost(link, article)),
+          map(article => this.parsePost(link, article, feedThumbnails.get(this.normalizeLink(link)) ?? '')),
           catchError(() => of(null))
         ))).subscribe(posts => {
           const validPosts = posts.filter((post): post is MediumPost => post !== null);
@@ -73,6 +74,26 @@ export class BlogComponent implements OnInit {
     return `${MEDIUM_READER_URL}${sourceUrl.host}${sourceUrl.pathname}${sourceUrl.search}`;
   }
 
+  private extractFeedThumbnails(feed: string): Map<string, string> {
+    const document = new DOMParser().parseFromString(feed, 'application/xml');
+    const thumbnails = new Map<string, string>();
+
+    for (const item of Array.from(document.getElementsByTagName('item'))) {
+      const link = this.childText(item, 'link');
+      const encodedContent = this.childText(item, 'encoded');
+      const thumbnail = new DOMParser()
+        .parseFromString(encodedContent, 'text/html')
+        .querySelector('img')
+        ?.getAttribute('src') ?? '';
+
+      if (link && thumbnail) {
+        thumbnails.set(this.normalizeLink(link), thumbnail);
+      }
+    }
+
+    return thumbnails;
+  }
+
   private extractPostLinks(feed: string): string[] {
     const normalizedFeed = feed.replace(/\s+/g, ' ');
     const links = [...normalizedFeed.matchAll(/https:\/\/medium\.com\/@szilard\.fer\/[\w-]+(?:\?[^\s)\]]*)?/g)]
@@ -81,12 +102,13 @@ export class BlogComponent implements OnInit {
     return [...new Set(links)].slice(0, 4);
   }
 
-  private parsePost(link: string, article: string): MediumPost {
+  private parsePost(link: string, article: string, feedThumbnail: string): MediumPost {
     const content = article.split('Markdown Content:')[1] ?? '';
     const title = this.metadataValue(article, 'Title') || this.titleFromUrl(link);
-    const thumbnail = [...content.matchAll(/!\[[^\]]*\]\(([^)\s]+)[^)]*\)/g)]
+    const articleThumbnail = [...content.matchAll(/!\[[^\]]*\]\(([^)\s]+)[^)]*\)/g)]
       .map(match => match[1])
-      .find(image => !image.includes('resize:fill:32:32')) ?? '';
+      .find(image => !this.isSmallImage(image)) ?? '';
+    const thumbnail = feedThumbnail || articleThumbnail;
 
     return {
       title,
@@ -96,6 +118,19 @@ export class BlogComponent implements OnInit {
       pubDate: this.metadataValue(article, 'Published Time'),
       isPortfolioProject: this.isPortfolioProject({ title, link })
     };
+  }
+
+  private childText(element: Element, localName: string): string {
+    return Array.from(element.children)
+      .find(child => child.localName === localName)
+      ?.textContent?.trim() ?? '';
+  }
+
+  private isSmallImage(image: string): boolean {
+    const dimensions = image.match(/resize:fill:(\d+):(\d+)/);
+    return dimensions !== null
+      && Number(dimensions[1]) <= 200
+      && Number(dimensions[2]) <= 200;
   }
 
   private normalizeLink(link: string): string {
