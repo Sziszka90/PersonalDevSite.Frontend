@@ -1,0 +1,44 @@
+@use 'base/variables' as variables;
+
+.portfolio-modal {
+  position: relative;
+  padding: 1.5rem;
+  color: variables.$text-color;
+  background: variables.$secondary-color;
+}
+
+.close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  border: 0;
+  background: transparent;
+  color: variables.$text-color;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.title {
+  padding-right: 2rem;
+}
+
+.title h1 {
+  color: variables.$green-color;
+  margin-top: 0;
+}
+
+.title h2 {
+  color: variables.$text-color;
+  font-size: 1.1rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.actions a {
+  text-decoration: none;
+}
