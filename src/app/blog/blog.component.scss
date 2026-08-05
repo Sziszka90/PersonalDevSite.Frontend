@@ -59,7 +59,7 @@ h2 {
 .featured-post {
   display: grid;
   grid-template-columns: minmax(200px, 0.75fr) minmax(0, 1.25fr);
-  max-width: 900px;
+  max-width: 780px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 2.5rem;
@@ -69,7 +69,7 @@ h2 {
 
 .featured-post .post-image {
   height: 100%;
-  min-height: 210px;
+  min-height: 180px;
 }
 
 .featured-post .post-content {

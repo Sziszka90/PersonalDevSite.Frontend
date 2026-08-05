@@ -1,6 +1,12 @@
 @use 'base/variables' as variables;
 @use 'layout/card' as card;
 
+.grid-container > .card:last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 0.5rem);
+}
+
 // Responsiveness
 @media(max-width: 800px) {
     .grid-container {
@@ -10,6 +16,11 @@
         gap: 1rem;                       
         width: 95%;                         
         margin: 2rem;                        
+    }
+
+    .grid-container > .card:last-child {
+        grid-column: auto;
+        width: 100%;
     }
 }
 
