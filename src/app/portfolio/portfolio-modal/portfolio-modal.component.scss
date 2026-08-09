@@ -12,6 +12,9 @@
   padding: 1.5rem;
   color: variables.$text-color;
   background: variables.$secondary-color;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .close-btn {
@@ -22,22 +25,36 @@
   background: transparent;
   color: variables.$text-color;
   cursor: pointer;
+  font: inherit;
   font-size: 1.5rem;
   line-height: 1;
 }
 
 .title {
   padding-right: 2rem;
+  margin-bottom: 1rem;
 }
 
 .title h1 {
   color: variables.$green-color;
-  margin-top: 0;
+  font: inherit;
+  font-size: 3rem;
+  font-weight: 500;
+  line-height: 1.1;
+  margin: 0;
 }
 
 .title h2 {
   color: variables.$text-color;
-  font-size: 1.1rem;
+  font: inherit;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.35;
+  margin: 0.75rem 0;
+}
+
+.portfolio-modal p {
+  margin: 0 0 1rem;
 }
 
 .actions {
@@ -47,5 +64,6 @@
 }
 
 .actions a {
+  font: inherit;
   text-decoration: none;
 }
