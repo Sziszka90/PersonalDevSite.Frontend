@@ -115,7 +115,8 @@ export class BlogComponent implements OnInit {
   openPortfolioModal(): void {
     this.matDialog.open(PortfolioModalComponent, {
       data: {},
-      width: '480px'
+      width: '480px',
+      panelClass: 'portfolio-modal-panel'
     });
   }
 }

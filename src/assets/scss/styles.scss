@@ -59,6 +59,17 @@ a {
   color: variables.$text-color;
 }
 
+.portfolio-modal-panel {
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: variables.$secondary-color;
+}
+
+.portfolio-modal-panel .mat-mdc-dialog-surface {
+  border-radius: 8px;
+  background-color: variables.$secondary-color;
+}
+
 
 
 
