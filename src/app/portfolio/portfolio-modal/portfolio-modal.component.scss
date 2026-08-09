@@ -1,5 +1,12 @@
 @use 'base/variables' as variables;
 
+:host {
+  display: block;
+  overflow: hidden;
+  border-radius: 8px;
+  background: variables.$secondary-color;
+}
+
 .portfolio-modal {
   position: relative;
   padding: 1.5rem;
