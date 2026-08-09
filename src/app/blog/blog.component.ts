@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { catchError, forkJoin, map, of } from 'rxjs';
 import { PortfolioModalComponent } from '../portfolio/portfolio-modal/portfolio-modal.component';
 
 interface MediumPost {
@@ -14,9 +13,20 @@ interface MediumPost {
   isPortfolioProject?: boolean;
 }
 
+interface MediumFeedItem {
+  title: string;
+  link: string;
+  content: string;
+  pubDate: string;
+}
+
+interface MediumFeedResponse {
+  items: MediumFeedItem[];
+}
+
 const MEDIUM_PROFILE_URL = 'https://medium.com/@szilard.fer';
 const MEDIUM_FEED_URL = 'https://medium.com/feed/@szilard.fer';
-const MEDIUM_READER_URL = 'https://r.jina.ai/http://';
+const MEDIUM_FEED_PROXY_URL = 'https://api.rss2json.com/v1/api.json?rss_url=';
 const PORTFOLIO_POST_URL = 'https://medium.com/@szilard.fer/portfolio-finance-app-660489e9846f';
 
 @Component({
@@ -37,29 +47,20 @@ export class BlogComponent implements OnInit {
   readonly feedUnavailable = signal(false);
 
   ngOnInit(): void {
-    this.http.get(this.readerUrl(MEDIUM_FEED_URL), { responseType: 'text' }).subscribe({
+    this.http.get<MediumFeedResponse>(this.feedUrl()).subscribe({
       next: feed => {
-        const postLinks = [
-          PORTFOLIO_POST_URL,
-          ...this.extractPostLinks(feed)
-        ].filter((link, index, links) => links.indexOf(link) === index);
-        const feedThumbnails = this.extractFeedThumbnails(feed);
+        const validPosts = feed.items
+          .map(item => this.parseFeedItem(item))
+          .filter((post): post is MediumPost => post !== null);
+        const featured = validPosts.find(post => this.normalizeLink(post.link) === PORTFOLIO_POST_URL) ?? null;
+        const recentPosts = validPosts
+          .filter(post => this.normalizeLink(post.link) !== PORTFOLIO_POST_URL)
+          .slice(0, 3);
 
-        forkJoin(postLinks.map(link => this.http.get(this.readerUrl(link), { responseType: 'text' }).pipe(
-          map(article => this.parsePost(link, article, feedThumbnails.get(this.normalizeLink(link)) ?? '')),
-          catchError(() => of(null))
-        ))).subscribe(posts => {
-          const validPosts = posts.filter((post): post is MediumPost => post !== null);
-          const featured = validPosts.find(post => this.normalizeLink(post.link) === PORTFOLIO_POST_URL) ?? null;
-          const recentPosts = validPosts
-            .filter(post => this.normalizeLink(post.link) !== PORTFOLIO_POST_URL)
-            .slice(0, 3);
-
-          this.featuredPost.set(featured);
-          this.posts.set(recentPosts);
-          this.feedUnavailable.set(!featured && recentPosts.length === 0);
-          this.loading.set(false);
-        });
+        this.featuredPost.set(featured);
+        this.posts.set(recentPosts);
+        this.feedUnavailable.set(!featured && recentPosts.length === 0);
+        this.loading.set(false);
       },
       error: () => {
         this.feedUnavailable.set(true);
@@ -68,100 +69,39 @@ export class BlogComponent implements OnInit {
     });
   }
 
-  private readerUrl(mediumUrl: string): string {
-    const sourceUrl = new URL(mediumUrl);
-    sourceUrl.searchParams.set('_refresh', Date.now().toString());
-    return `${MEDIUM_READER_URL}${sourceUrl.host}${sourceUrl.pathname}${sourceUrl.search}`;
+  private feedUrl(): string {
+    return `${MEDIUM_FEED_PROXY_URL}${encodeURIComponent(MEDIUM_FEED_URL)}`;
   }
 
-  private extractFeedThumbnails(feed: string): Map<string, string> {
-    const document = new DOMParser().parseFromString(feed, 'application/xml');
-    const thumbnails = new Map<string, string>();
-
-    for (const item of Array.from(document.getElementsByTagName('item'))) {
-      const link = this.childText(item, 'link');
-      const encodedContent = this.childText(item, 'encoded');
-      const thumbnail = new DOMParser()
-        .parseFromString(encodedContent, 'text/html')
-        .querySelector('img')
-        ?.getAttribute('src') ?? '';
-
-      if (link && thumbnail) {
-        thumbnails.set(this.normalizeLink(link), thumbnail);
-      }
+  private parseFeedItem(item: MediumFeedItem): MediumPost | null {
+    const link = this.normalizeLink(item.link);
+    if (!item.title || !link) {
+      return null;
     }
 
-    return thumbnails;
-  }
-
-  private extractPostLinks(feed: string): string[] {
-    const normalizedFeed = feed.replace(/\s+/g, ' ');
-    const links = [...normalizedFeed.matchAll(/https:\/\/medium\.com\/@szilard\.fer\/[\w-]+(?:\?[^\s)\]]*)?/g)]
-      .map(match => match[0].split('?')[0]);
-
-    return [...new Set(links)].slice(0, 4);
-  }
-
-  private parsePost(link: string, article: string, feedThumbnail: string): MediumPost {
-    const content = article.split('Markdown Content:')[1] ?? '';
-    const title = this.metadataValue(article, 'Title') || this.titleFromUrl(link);
-    const articleThumbnail = [...content.matchAll(/!\[[^\]]*\]\(([^)\s]+)[^)]*\)/g)]
-      .map(match => match[1])
-      .find(image => !this.isSmallImage(image)) ?? '';
-    const thumbnail = feedThumbnail || articleThumbnail;
+    const contentDocument = new DOMParser().parseFromString(item.content, 'text/html');
+    const thumbnail = contentDocument.querySelector('img')?.getAttribute('src') ?? '';
 
     return {
-      title,
+      title: item.title,
       link,
-      description: this.extractDescription(content),
+      description: this.extractFeedDescription(contentDocument),
       thumbnail,
-      pubDate: this.metadataValue(article, 'Published Time'),
-      isPortfolioProject: this.isPortfolioProject({ title, link })
+      pubDate: item.pubDate,
+      isPortfolioProject: this.isPortfolioProject({ title: item.title, link })
     };
   }
 
-  private childText(element: Element, localName: string): string {
-    return Array.from(element.children)
-      .find(child => child.localName === localName)
-      ?.textContent?.trim() ?? '';
-  }
-
-  private isSmallImage(image: string): boolean {
-    const dimensions = image.match(/resize:fill:(\d+):(\d+)/);
-    return dimensions !== null
-      && Number(dimensions[1]) <= 200
-      && Number(dimensions[2]) <= 200;
-  }
-
-  private normalizeLink(link: string): string {
-    return link.split('?')[0].replace(/\/$/, '');
-  }
-
-  private metadataValue(article: string, key: string): string {
-    return article.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'))?.[1]?.trim() ?? '';
-  }
-
-  private titleFromUrl(link: string): string {
-    const slug = link.split('/').pop() ?? '';
-    return slug.replace(/-[a-f0-9]{12}$/, '').replace(/-/g, ' ');
-  }
-
-  private extractDescription(content: string): string {
-    const paragraph = content.split(/\n\s*\n/)
-      .map(block => this.stripMarkdown(block))
-      .find(block => block.length > 80);
+  private extractFeedDescription(document: Document): string {
+    const paragraph = Array.from(document.querySelectorAll('p'))
+      .map(element => element.textContent?.replace(/\s+/g, ' ').trim() ?? '')
+      .find(value => value.length > 80);
 
     return paragraph?.slice(0, 280) ?? '';
   }
 
-  private stripMarkdown(value: string): string {
-    return value
-      .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
-      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
-      .replace(/\[\]\([^)]*\)/g, '')
-      .replace(/[*_`>#]/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
+  private normalizeLink(link: string): string {
+    return link.split('?')[0].replace(/\/$/, '');
   }
 
   private isPortfolioProject(post: Pick<MediumPost, 'title' | 'link'>): boolean {
