@@ -62,6 +62,7 @@ li {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-family: variables.$default-font;
   transition: transform 0.2s ease-in-out;
 }
   
@@ -72,6 +73,7 @@ li {
 .custom-button {
   padding: 1rem;    
   background-color: variables.$primary-color;
+  font-family: variables.$default-font;
   font-size: 1rem;       
   border: 3px solid variables.$primary-color; 
   border-radius: 20px;   
