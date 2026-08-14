@@ -66,6 +66,18 @@ export class ChatBubbleComponent {
     }, 0);
   }
 
+  private scrollToResponseTop() {
+    setTimeout(() => {
+      if (!this.chatBody) return;
+
+      const assistantMessages = this.chatBody.nativeElement.querySelectorAll('.chat-message.assistant');
+      const latestAssistantMessage = assistantMessages[assistantMessages.length - 1] as HTMLElement | undefined;
+      if (latestAssistantMessage) {
+        this.chatBody.nativeElement.scrollTop = latestAssistantMessage.offsetTop - 8;
+      }
+    }, 0);
+  }
+
   sendMessage() {
     if (!this.message.trim() || this.loading()) return;
     const msgToSend = this.message;
@@ -79,6 +91,7 @@ export class ChatBubbleComponent {
     this.scrollToBottom();
 
     let assistantText = '';
+    let responseTopShown = false;
     this.apiService.streamChat(msgToSend, history, delta => {
       assistantText += delta;
       this.messages.update(messages => {
@@ -94,7 +107,10 @@ export class ChatBubbleComponent {
         }
         return updatedMessages;
       });
-      this.scrollToBottom();
+      if (!responseTopShown) {
+        responseTopShown = true;
+        this.scrollToResponseTop();
+      }
     }).then(() => {
       this.messages.update(messages => {
         const updatedMessages = [...messages];
@@ -110,7 +126,7 @@ export class ChatBubbleComponent {
         { role: 'assistant', content: assistantText || 'No response' }
       ];
       this.loading.set(false);
-      this.scrollToBottom();
+      if (!responseTopShown) this.scrollToResponseTop();
     }).catch(() => {
       this.messages.update(messages => {
         const updatedMessages = [...messages];
@@ -121,7 +137,7 @@ export class ChatBubbleComponent {
         return updatedMessages;
       });
       this.loading.set(false);
-      this.scrollToBottom();
+      this.scrollToResponseTop();
     });
   }
 
