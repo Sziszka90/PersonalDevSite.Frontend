@@ -2,6 +2,7 @@ import { Component, inject, ViewChild, ElementRef, signal } from '@angular/core'
 import { ApiService } from '../../services/api.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ChatMessage } from '../../models/conversation.dto';
 
 @Component({
   selector: 'app-chat-bubble',
@@ -23,6 +24,7 @@ export class ChatBubbleComponent {
   messages = signal<{ text: string, sender: 'user' | 'assistant' }[]>([
     { text: 'Hi! Welcome to my personal website. Feel free to ask me anything about my experience, skills, or projects!', sender: 'assistant' }
   ]);
+  private conversationHistory: ChatMessage[] = [];
   dragOffsetX = 0;
   dragOffsetY = 0;
   dragging = false;
@@ -67,25 +69,28 @@ export class ChatBubbleComponent {
   sendMessage() {
     if (!this.message.trim() || this.loading()) return;
     const msgToSend = this.message;
+    const history = [...this.conversationHistory];
     this.message = '';
     this.loading.set(true);
-    const assistantMessageIndex = this.messages().length + 1;
     this.messages.update(messages => [
       ...messages,
-      { text: msgToSend, sender: 'user' },
-      { text: '', sender: 'assistant' }
+      { text: msgToSend, sender: 'user' }
     ]);
     this.scrollToBottom();
 
-    this.apiService.streamChat(msgToSend, delta => {
+    let assistantText = '';
+    this.apiService.streamChat(msgToSend, history, delta => {
+      assistantText += delta;
       this.messages.update(messages => {
         const updatedMessages = [...messages];
-        const assistantMessage = updatedMessages[assistantMessageIndex];
-        if (assistantMessage) {
-          updatedMessages[assistantMessageIndex] = {
-            ...assistantMessage,
-            text: assistantMessage.text + delta
+        const lastMessage = updatedMessages[updatedMessages.length - 1];
+        if (lastMessage?.sender === 'assistant') {
+          updatedMessages[updatedMessages.length - 1] = {
+            ...lastMessage,
+            text: lastMessage.text + delta
           };
+        } else {
+          updatedMessages.push({ text: delta, sender: 'assistant' });
         }
         return updatedMessages;
       });
@@ -93,26 +98,25 @@ export class ChatBubbleComponent {
     }).then(() => {
       this.messages.update(messages => {
         const updatedMessages = [...messages];
-        const assistantMessage = updatedMessages[assistantMessageIndex];
-        if (assistantMessage && !assistantMessage.text) {
-          updatedMessages[assistantMessageIndex] = {
-            ...assistantMessage,
-            text: 'No response'
-          };
+        const lastMessage = updatedMessages[updatedMessages.length - 1];
+        if (lastMessage?.sender !== 'assistant') {
+          updatedMessages.push({ text: 'No response', sender: 'assistant' });
         }
         return updatedMessages;
       });
+      this.conversationHistory = [
+        ...history,
+        { role: 'user', content: msgToSend },
+        { role: 'assistant', content: assistantText || 'No response' }
+      ];
       this.loading.set(false);
       this.scrollToBottom();
     }).catch(() => {
       this.messages.update(messages => {
         const updatedMessages = [...messages];
-        const assistantMessage = updatedMessages[assistantMessageIndex];
-        if (assistantMessage && !assistantMessage.text) {
-          updatedMessages[assistantMessageIndex] = {
-            ...assistantMessage,
-            text: 'Error sending message.'
-          };
+        const lastMessage = updatedMessages[updatedMessages.length - 1];
+        if (lastMessage?.sender !== 'assistant') {
+          updatedMessages.push({ text: 'Error sending message.', sender: 'assistant' });
         }
         return updatedMessages;
       });

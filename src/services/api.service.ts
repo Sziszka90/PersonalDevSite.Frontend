@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
+import { ChatRequest } from '../models/conversation.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -10,18 +11,18 @@ export class ApiService {
   private http = inject(HttpClient);
   private apiUrl = environment.API_URL;
 
-  post<Conversation>(body: Conversation): Observable<Conversation> {
-    return this.http.post<Conversation>(`${this.apiUrl}`, body);
+  post<ChatResponse>(body: ChatRequest): Observable<ChatResponse> {
+    return this.http.post<ChatResponse>(`${this.apiUrl}`, body);
   }
 
-  async streamChat(message: string, onDelta: (delta: string) => void): Promise<void> {
+  async streamChat(message: string, history: ChatRequest['history'], onDelta: (delta: string) => void): Promise<void> {
     const response = await fetch(this.apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'text/event-stream'
       },
-      body: JSON.stringify({ message })
+      body: JSON.stringify({ message, history })
     });
 
     if (!response.ok || !response.body) {
