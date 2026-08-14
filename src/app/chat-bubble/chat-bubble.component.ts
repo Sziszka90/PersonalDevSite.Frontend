@@ -73,7 +73,10 @@ export class ChatBubbleComponent {
       const assistantMessages = this.chatBody.nativeElement.querySelectorAll('.chat-message.assistant');
       const latestAssistantMessage = assistantMessages[assistantMessages.length - 1] as HTMLElement | undefined;
       if (latestAssistantMessage) {
-        this.chatBody.nativeElement.scrollTop = latestAssistantMessage.offsetTop - 8;
+        const chatBodyRect = this.chatBody.nativeElement.getBoundingClientRect();
+        const responseRect = latestAssistantMessage.getBoundingClientRect();
+        const upperSpacing = 24;
+        this.chatBody.nativeElement.scrollTop += responseRect.top - chatBodyRect.top - upperSpacing;
       }
     }, 0);
   }
