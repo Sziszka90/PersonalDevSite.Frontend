@@ -22,7 +22,7 @@ export class ChatBubbleComponent {
   loading = signal(false);
   showBubble = false;
   messages = signal<{ text: string, sender: 'user' | 'assistant' }[]>([
-    { text: "Hi! I'm the AI chat assistant for this personal website. Feel free to ask me anything about my experience, skills, or projects!", sender: 'assistant' }
+    { text: "Hi! I'm the AI chat assistant for this personal website. Feel free to ask me anything about Szilard's experience, skills, or projects!", sender: 'assistant' }
   ]);
   private conversationHistory: ChatMessage[] = [];
   dragOffsetX = 0;
