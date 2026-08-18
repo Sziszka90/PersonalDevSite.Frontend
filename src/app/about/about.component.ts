@@ -26,7 +26,7 @@ export class AboutComponent implements OnInit {
     this.cvDisabled = true;
     try {
       const link = document.createElement('a');
-      link.href = 'assets/Ferencz_Szilard_CV.pdf';
+      link.href = 'assets/Szilard_Ferencz_CV.pdf';
       link.download = 'SzilardFerencz-CV';
       document.body.appendChild(link);
       link.click();
