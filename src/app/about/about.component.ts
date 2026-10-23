@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TypingAnimationDirective } from '../../directives/typewriter/typing-animation.directive';
 import { FloatInOnScrollDirective } from '../directives/float-in.directive';
 import { TelemetryService } from '../telemetry.service';
@@ -10,6 +10,7 @@ import { interval } from 'rxjs';
   standalone: true,
   imports: [TypingAnimationDirective, FloatInOnScrollDirective],
   templateUrl: './about.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './about.component.scss',
 })
 export class AboutComponent implements OnInit {

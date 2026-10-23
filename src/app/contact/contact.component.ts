@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import emailjs from 'emailjs-com';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -10,6 +10,7 @@ import { FloatInOnScrollDirective } from '../directives/float-in.directive';
   standalone: true,
   imports: [ReactiveFormsModule, MatSnackBarModule, GetInTouchComponent, FloatInOnScrollDirective],
   templateUrl: './contact.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './contact.component.scss'
 })
 export class ContactComponent {

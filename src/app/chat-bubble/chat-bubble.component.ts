@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ElementRef, signal } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -11,6 +11,7 @@ import { ChatMessage } from '../../models/conversation.dto';
     CommonModule,
     FormsModule
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./chat-bubble.component.scss']
 })
 export class ChatBubbleComponent {

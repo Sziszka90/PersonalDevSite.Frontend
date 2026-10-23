@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Offcanvas } from 'bootstrap';
 import { GetInTouchComponent } from '../get-in-touch/get-in-touch.component';
 
@@ -7,6 +7,7 @@ import { GetInTouchComponent } from '../get-in-touch/get-in-touch.component';
   imports: [GetInTouchComponent],
   standalone: true,
   templateUrl: './nav-bar.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './nav-bar.component.scss'
 })
 export class NavBarComponent implements AfterViewInit, OnDestroy {

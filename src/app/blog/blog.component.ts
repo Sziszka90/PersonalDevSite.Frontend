@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { PortfolioModalComponent } from '../portfolio/portfolio-modal/portfolio-modal.component';
 
@@ -51,6 +51,7 @@ const FALLBACK_RECENT_POSTS: MediumPost[] = [{
   standalone: true,
   imports: [CommonModule, MatDialogModule],
   templateUrl: './blog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './blog.component.scss'
 })
 export class BlogComponent implements OnInit {
