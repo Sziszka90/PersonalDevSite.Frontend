@@ -1,0 +1,225 @@
+@use 'base/variables' as variables;
+
+// Containers
+.component-container {
+    flex-wrap: nowrap;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    margin: 0;
+    width: 100%;
+    background-color: variables.$navbar-color;
+    border-radius: 0px;
+}
+
+// Logo
+.main-logo {
+    display: flex;
+    img {
+        width: 6rem;
+        height: auto;
+        max-height: 6rem;
+        object-fit: contain;
+    }
+}
+
+.logo-text {
+    font-size: 1rem;
+    padding: 1rem;
+}
+
+// NavBar
+.navbar {
+    margin-left: auto;
+}
+
+.navbar-toggle {
+    margin: 1rem;
+}
+
+.navbar-toggle.custom-button,
+.offcanvas-toggle.custom-button,
+.offcanvas-close-icon .custom-button {
+    padding: 0.65rem;
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: variables.$muted-color;
+}
+
+.navbar-toggle.custom-button:hover,
+.offcanvas-toggle.custom-button:hover,
+.offcanvas-close-icon .custom-button:hover {
+    background-color: variables.$card-hover-color;
+    border-color: variables.$border-color;
+    color: variables.$text-color;
+}
+
+.navbar-toggle.custom-button:hover i,
+.offcanvas-toggle.custom-button:hover i {
+    color: variables.$green-color;
+}
+
+.navbar-toggle.custom-button i,
+.offcanvas-toggle.custom-button i {
+    transition: color 0.2s ease;
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 1rem;
+    padding: 0;
+    margin-left: auto;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+  
+.navbar-menu a {
+    position: relative;
+    display: inline-block;
+    color: variables.$text-color;
+    transition: color 0.2s ease;
+}
+
+.navbar-menu a:hover,
+.navbar-menu a:focus-visible {
+    color: variables.$green-color;
+}
+
+.navbar-menu a::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -0.35rem;
+    left: 0;
+    height: 2px;
+    background: variables.$green-color;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+}
+
+.navbar-menu a:hover::after,
+.navbar-menu a:focus-visible::after,
+.navbar-menu a.active::after {
+    transform: scaleX(1);
+}
+
+.offcanvas-menu a.active {
+    color: variables.$green-color;
+}
+
+.navbar-toggle {
+    display: none;
+}
+
+.title {
+    margin-left: 1rem;
+
+    a {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+
+    span {
+        font-size: 2rem;
+    }
+}
+
+// OffCanvas
+.offcanvas {
+    background-color: variables.$navbar-color;
+    overflow: auto;
+    width: 250px;
+}
+
+.offcanvas-getintouch {
+    width: 350px;
+    height: 100%;
+}
+
+.offcanvas-navbar {
+    width: 250px;
+    height: 100%;
+}
+
+.offcanvas-body {
+    margin: 0.5rem 0.5rem;
+}
+
+.offcanvas-toggle {
+    margin: 1rem;
+}
+
+.offcanvas-side-info,
+.offcanvas-logo {
+    color: variables.$text-color;
+}
+
+.offcanvas-menu a,
+.offcanvas-menu li,
+.offcanvas-menu ul {
+    list-style: none;
+    color: variables.$text-color;
+    text-decoration: none;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.menu-close i {
+    font-size: 1rem;
+}
+
+.offcanvas-menu {
+    border-top: 1px solid variables.$border-color;
+    border-bottom: 1px solid variables.$border-color;
+    margin-top: 1rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.offcanvas-menu a:hover,
+.offcanvas-menu a:focus-visible {
+    color: variables.$green-color;
+    transition: color 0.2s ease;
+}
+
+// Responsiveness
+@media (max-width: 589px) {
+    .offcanvas-toggle {
+        display: none;
+    }
+}
+
+@media(max-width: 1270px) {
+    .navbar-menu {
+        display: none;
+    }
+
+    .navbar-toggle {
+        display: block;
+    }
+
+    .logo-text {
+        display: flex;
+        flex-direction: column;
+        margin-left: 1rem;
+        padding: 0rem;
+    }
+
+    .logo-text span {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 600px) {
+    .logo-text span {
+        font-size: 1.5rem;
+    }
+}

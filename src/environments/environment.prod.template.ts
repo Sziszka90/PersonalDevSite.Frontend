@@ -1,0 +1,5 @@
+export const environment = {
+  production: true,
+  API_URL: '${API_URL}',
+  APPLICATION_INSIGHTS_CONNECTION_STRING: '${APPLICATION_INSIGHTS_CONNECTION_STRING}'
+};

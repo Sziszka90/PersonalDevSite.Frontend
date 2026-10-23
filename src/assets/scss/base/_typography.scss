@@ -1,0 +1,39 @@
+@use "variables";
+
+.default-font {
+    font-family: variables.$default-font;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.title-font {
+    font-family: variables.$title-font;
+    font-size: 1.5rem;
+    line-height: 1.5;
+}
+
+.letter-space {
+    letter-spacing: 0.1rem;
+}
+
+.text-color-grey {
+    color: variables.$muted-text-color;
+}
+
+.text-color-green {
+    color: variables.$green-color;
+}
+  
+.text-color-blue {
+  color: variables.$text-color;
+}
+
+@media(max-width: 500px) {
+    .default-font {
+      font-size: medium;
+    }
+
+    .title-font {
+      font-size: 1rem;
+    }
+  }

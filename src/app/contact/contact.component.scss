@@ -1,0 +1,130 @@
+@use 'base/variables' as variables;
+
+// Containers
+.contact-container {
+    margin: 1rem;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 100%;
+    transform: translateX(60px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.form-container.float-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.message-container {
+    display: flex;
+    flex-direction: row;
+    gap: 5rem;
+    width: 100%;
+}
+
+.contact-info-container {
+    width: 50%;
+    transform: translateX(60px);
+    opacity: 0;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.contact-info-container.float-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+// Forms
+h3 {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+input {
+    padding: 10px 30px;
+    font-size: 20px;
+    border: 1px solid variables.$border-color;
+    border-radius: 20px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+    margin: 1rem;
+    background: variables.$input-background-color;
+    color: variables.$text-color;
+}
+
+textarea {
+    padding: 1rem;
+    font-size: 20px;
+    border: 1px solid variables.$border-color;
+    border-radius: 20px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+    margin: 1rem;
+    background: variables.$input-background-color;
+    color: variables.$text-color;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: variables.$muted-color;
+    opacity: 1;
+}
+
+.message-form {
+    height: 100%;
+}
+
+input:focus {
+    border-color: variables.$focus-color;
+    box-shadow: 0 0 0 3px rgba(104, 220, 211, 0.18);
+}
+
+textarea:focus {
+    border-color: variables.$focus-color;
+    box-shadow: 0 0 0 3px rgba(104, 220, 211, 0.18);
+}
+
+// Responsiveness
+@media (max-width: 880px) {
+    .main-container {
+        flex-direction: column;
+        padding-left: 0rem;
+        padding-right: 0rem;
+    }
+
+    .contact-info-container {
+        text-align: center;
+        width: 50%
+    }
+
+    .message-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-container {
+        margin-bottom: 2rem;
+        width: 100%;
+    }
+}

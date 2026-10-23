@@ -1,0 +1,36 @@
+<section id="contact">
+    <div class="contact-container">
+        <div class="light-border">
+            <div class="main-container">
+                <div class="title-container">
+                    <h3 class="text-color-grey">Let's connect!</h3>
+                </div>
+                <div class="message-container">
+                    <div appFloatInOnScroll class="form-container">
+                        <div class="form-column">
+                            <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+                                <div class="form-row">
+                                    <input formControlName="name" placeholder="Name" name="name">
+                                    <input formControlName="email" placeholder="Email" name="email">
+                                </div>
+                                <div class="form-row">
+                                    <input formControlName="phone" placeholder="Phone" name="phone">
+                                    <input formControlName="subject" placeholder="Subject" name="subject">
+                                </div>
+                                <div class="form-row">
+                                    <textarea formControlName="message" placeholder="This is your message!" class="message-form" name="message"></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <button class="submit-button custom-button bounce-button" type="submit" [disabled]="contactForm.invalid">Submit</button>
+                                </div>
+                            </form>
+                        </div> 
+                    </div>
+                    <div appFloatInOnScroll class="contact-info-container">
+                        <app-get-in-touch></app-get-in-touch>     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

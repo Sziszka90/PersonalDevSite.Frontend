@@ -1,0 +1,118 @@
+
+@use "base/variables";
+@use "base/typography";
+@use "layout/container";
+@use "layout/grid";
+@use "layout/card";
+@use "utilities/helpers";
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((
+    color: (
+      theme-type: dark,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: variables.$default-font,
+    density: 0,
+  ));
+  --bg-app: #{variables.$background-color};
+  --bg-sidebar: #{variables.$navbar-color};
+  --bg-section: #{variables.$secondary-color};
+  --bg-card: #{variables.$card-background-color};
+  --bg-card-hover: #{variables.$card-hover-color};
+  --color-primary: #{variables.$green-color};
+  --color-primary-hover: #{variables.$green-hover-color};
+  --color-on-primary: #{variables.$on-primary-color};
+  --text-primary: #{variables.$text-color};
+  --text-secondary: #{variables.$muted-text-color};
+  --bg-input: #{variables.$input-background-color};
+  --border-color: #{variables.$border-color};
+  --focus-ring: #{variables.$focus-color};
+  --bg-button-secondary: #{variables.$card-hover-color};
+  --mat-sys-primary: #{variables.$green-color};
+  --mat-sys-on-primary: #{variables.$on-primary-color};
+  --mat-sys-secondary: #{variables.$muted-color};
+  --mat-sys-tertiary: #{variables.$muted-color};
+  --mat-sys-surface: #{variables.$secondary-color};
+  --mat-sys-surface-container: #{variables.$secondary-color};
+  --mat-sys-surface-container-low: #{variables.$secondary-color};
+  --mat-sys-surface-container-high: #{variables.$card-background-color};
+  --mat-sys-on-surface: #{variables.$text-color};
+  --mat-sys-background: #{variables.$background-color};
+  --mat-sys-on-background: #{variables.$text-color};
+  --mat-sys-outline: #{variables.$border-color};
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+    background-color: variables.$background-color;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    color: variables.$text-color;
+    font-family: variables.$default-font;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+main > section {
+  scroll-margin-top: 6rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: variables.$text-color;
+  font-family: variables.$title-font;
+  letter-spacing: -0.025em;
+}
+
+h2 {
+  color: variables.$muted-text-color;
+}
+
+h1 {
+  font-weight: 700;
+}
+
+h2, h3, h4 {
+  font-weight: 600;
+}
+
+p, label, input, textarea, button, select {
+  font-family: variables.$default-font;
+}
+
+a {
+  text-decoration: none;
+  color: variables.$text-color;
+}
+
+a:hover {
+  color: variables.$green-hover-color;
+}
+
+.financial-value, .tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.portfolio-modal-panel {
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: variables.$card-background-color;
+}
+
+.portfolio-modal-panel .mat-mdc-dialog-surface {
+  border-radius: 8px;
+  background-color: variables.$card-background-color;
+}

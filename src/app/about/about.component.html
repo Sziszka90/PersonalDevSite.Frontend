@@ -1,0 +1,64 @@
+<section id="about">
+  <div appFloatInOnScroll class="component-container">
+    <div class="light-border">
+      <div class="main-container">
+        <div class="row-container">
+          <div appFloatInOnScroll class="left-column">
+            <div class="typewriter-container">
+              <span class="title-font ">&lt;span&gt;</span>
+              <span class="text-color-grey title-font "
+                typingAnimation
+                [typeSpeed]="200"
+                [startDelay]="2000"
+                [condition]="start"
+                [text]='"Hi, I&#39;m Szilard"'>
+              </span>
+              <span class="title-font">&lt;/span&gt;</span>
+            </div>
+            <div class="introduction text-color-grey title-font"><span class="text-color-blue"><span class="text-color-green">&#123;</span> Full Stack <span class="text-color-green">&#125;</span></span> Software Engineer</div>
+            <div class="introduction-summary title-font  text-color-grey"><span>&lt;p&gt;</span>I build software with <span>.NET</span>, <span>Angular</span>, <span>Python</span>, and <span>Azure</span>, working across applications, APIs, libraries, and cloud infrastructure. I enjoy solving complex engineering problems and turning ideas into practical, reliable software built to last.<span>&lt;/p&gt;</span></div>
+            <div class="links">
+              <button class="bounce-button custom-button default-font resume">
+                <a href="assets/Szilard_Ferencz_CV.pdf" download="SzilardFerencz-CV" (click)="trackCvDownload()">
+                  <div class="download-button">
+                    <span><i class="fa-solid fa-download"></i> [CV]</span>
+                  </div>
+                </a>
+              </button>
+              <button class="bounce-button custom-button default-font github">
+                <a href="https://github.com/Sziszka90" target="_blank" rel="noopener noreferrer">
+                  <div class="github-button">
+                    <span><i class="fa-brands fa-github"></i></span>
+                  </div>
+                </a>
+              </button>
+              <button class="bounce-button custom-button default-font linkedin">
+                <a href="https://www.linkedin.com/in/szilard-ferencz/" target="_blank" rel="noopener noreferrer" (click)="trackLinkedInClick()">
+                  <div class="linkedin-button">
+                    <span><i class="fa-brands fa-linkedin"></i></span>
+                  </div>
+                </a>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="block-container">
+          <div class="icon-carousel" role="region" aria-label="Technology stack">
+            <div class="carousel-track">
+              @for (copy of [0, 1]; track copy) {
+                <div class="carousel-group" [attr.aria-hidden]="copy === 1 ? 'true' : null">
+                  @for (technology of carouselTechnologies; track technology.name) {
+                    <div class="technology-logo">
+                      <img [src]="technology.image" [alt]="copy === 0 ? technology.name : ''" loading="lazy">
+                      <span class="technology-label">{{ technology.name }}</span>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

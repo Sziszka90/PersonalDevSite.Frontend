@@ -1,0 +1,69 @@
+<div class="component-container">
+    <button type="button" class="offcanvas-toggle custom-button text-center" aria-label="Open contact information"
+            data-bs-toggle="offcanvas" 
+            data-bs-target="#offcanvasInfo">
+            <i class="fa-solid fa-phone text-color-grey"></i>
+    </button>
+    <div class="title">
+        <a class="navbar-brand main-logo" href="#">
+            <img src="assets/logo.png" alt="Szilard Ferencz logo" />
+            <div class="logo-text">
+                <span class="text-color-grey default-font">Szilard Ferencz</span>
+                <span class="text-color-grey default-font">Software Engineer</span>
+            </div>
+        </a>
+    </div>
+
+    <nav class="navbar">
+        <button type="button" class="navbar-toggle custom-button" aria-label="Open navigation menu"
+                data-bs-toggle="offcanvas" 
+                data-bs-target="#offcanvasMenu">
+            <i class="fa-duotone fa-solid fa-bars text-color-grey"></i>
+        </button>
+
+        <div>
+            <ul class="navbar-menu default-font">
+                <li><a href="#about">About</a></li>
+                <li><a href="#areas">Areas</a></li>
+                <li><a href="#experiences">Experiences</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>   
+</div>
+
+<div class="offcanvas offcanvas-end offcanvas-navbar" tabindex="-1" id="offcanvasMenu">
+    <div class="offcanvas-body">
+        <div class="offcanvas-close-icon menu-close text-end">
+            <button type="button" class="custom-button" aria-label="Close navigation menu" data-bs-dismiss="offcanvas">
+                <i class="fa-solid fa-xmark text-color-grey"></i>
+            </button>
+        </div>
+        <div class="title">
+            <a class="navbar-brand main-logo" href="#">
+                <img src="assets/logo.png" alt="Szilard Ferencz logo" />
+            </a>
+        </div>
+        <div>
+            <ul class="offcanvas-menu default-font">
+                <li><a (click)="closeOffcanvas()" href="#about">About</a></li>
+                <li><a (click)="closeOffcanvas()" href="#areas">Areas</a></li>
+                <li><a (click)="closeOffcanvas()" href="#experiences">Experiences</a></li>
+                <li><a (click)="closeOffcanvas()" href="#blog">Blog</a></li>
+                <li><a (click)="closeOffcanvas()" href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-start offcanvas-getintouch" tabindex="-1" id="offcanvasInfo">
+    <div class="offcanvas-body">
+        <div class="offcanvas-close-icon menu-close text-end">
+            <button type="button" class="custom-button" aria-label="Close contact information" data-bs-dismiss="offcanvas">
+                <i class="fa-solid fa-xmark text-color-grey"></i>
+            </button>
+        </div>
+        <app-get-in-touch></app-get-in-touch>
+    </div>
+</div>

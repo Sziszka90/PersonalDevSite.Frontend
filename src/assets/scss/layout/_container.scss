@@ -1,0 +1,45 @@
+@use "base/variables";
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+    border-radius: 8px;
+    background-color: variables.$secondary-color;
+    width: 100%;
+    padding: 3rem;
+    align-items: center;
+    color: variables.$text-color;
+}
+
+.component-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+    padding: 0;
+    background-color: variables.$secondary-color;
+    border-radius: 20px;
+}
+
+.component-container.float-in 
+{
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.row-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.block-container {
+    display: block;
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    padding: 1rem;
+}
+
+

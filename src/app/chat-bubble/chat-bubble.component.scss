@@ -1,0 +1,242 @@
+@use 'base/variables' as variables;
+
+.chat-bubble {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 1000;
+}
+
+.chat-toggle {
+  background: variables.$card-background-color;
+  color: variables.$text-color;
+  border: 1px solid variables.$border-color;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  font-size: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: visible;
+  z-index: 1100;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+.chat-toggle.dragging { cursor: grabbing; }
+
+.chat-toggle:hover {
+  background: variables.$card-hover-color;
+}
+
+.chat-toggle:focus { outline: 2px solid variables.$focus-color; }
+
+.pulse {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 88px; /* large ring */
+  height: 88px;
+  border-radius: 50%;
+  z-index: 1099; /* sit behind the button so the emoji stays visible */
+  pointer-events: none;
+  border: 2px solid rgba(57,214,107,0.2);
+  animation: pulse-ring 1.6s cubic-bezier(.22,.9,.35,1) infinite;
+  opacity: 0.95;
+}
+
+.pulse::after {
+  content: '';
+  position: absolute;
+  left: 62%;
+  top: 36%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: variables.$green-color;
+  box-shadow: 0 0 10px rgba(57,214,107,0.4);
+}
+
+.chat-icon {
+  display: inline-block;
+  line-height: 1;
+  transition: transform 220ms cubic-bezier(.22,.9,.35,1), text-shadow 220ms;
+}
+
+.chat-icon.pulsing {
+  animation: iconPulse 1.2s infinite cubic-bezier(.22,.9,.35,1);
+  text-shadow: 0 6px 18px rgba(164,173,179,0.2);
+}
+
+@keyframes iconPulse {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.18); }
+  70% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 1;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.45);
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+  }
+}
+
+.chat-window {
+  background: variables.$card-background-color;
+  color: variables.$card-text-color;
+  border-radius: 12px;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.25);
+  width: 320px;
+  padding: 16px;
+  position: absolute;
+  top: 72px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  transform-origin: top right;
+  animation: popIn 180ms ease-out;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.chat-header {
+  color: variables.$card-text-color;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-body {
+  flex: 1;
+  margin-bottom: 8px;
+  overflow-y: auto;
+  max-height: 260px;
+}
+
+.chat-response {
+  background: variables.$background-color;
+  color: variables.$text-color;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 8px;
+  border: 1px solid variables.$border-color;
+  background: variables.$input-background-color;
+  color: variables.$text-color;
+  padding: 8px;
+  resize: none;
+}
+
+.chat-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-footer button {
+  border-radius: 24px;
+  border: 1px solid variables.$green-color;
+  background: variables.$green-color;
+  color: variables.$on-primary-color;
+  padding: 8px 20px;
+  font: inherit;
+  cursor: pointer;
+  box-shadow: none;
+  outline: none;
+  transition: background 0.2s;
+}
+
+.chat-footer button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.chat-footer button:not(:disabled):hover {
+  background: variables.$green-hover-color;
+}
+
+.chat-message {
+  max-width: 70%;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border-radius: 16px;
+  font-size: 1rem;
+  word-break: break-word;
+}
+
+.chat-message.user {
+  background: variables.$card-hover-color;
+  color: variables.$text-color;
+  margin-left: auto;
+  text-align: right;
+}
+
+.chat-message.assistant {
+  background: variables.$secondary-color;
+  color: variables.$text-color;
+  margin-right: auto;
+  text-align: left;
+}
+
+.chat-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  margin-bottom: 8px;
+}
+
+.chat-loader .dot {
+  width: 10px;
+  height: 10px;
+  margin: 0 4px;
+  border-radius: 50%;
+  background: variables.$muted-color;
+  animation: jump 0.6s infinite;
+}
+
+.chat-loader .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.chat-loader .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes jump {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
