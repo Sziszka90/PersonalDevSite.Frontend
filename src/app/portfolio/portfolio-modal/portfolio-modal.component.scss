@@ -67,3 +67,7 @@
   font-family: variables.$default-font;
   text-decoration: none;
 }
+
+.actions a.custom-button:hover {
+  color: variables.$on-primary-color;
+}
