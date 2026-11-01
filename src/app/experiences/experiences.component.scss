@@ -39,6 +39,7 @@
     border-radius: 8px;
     background-color: variables.$card-background-color;
     color: variables.$card-text-color;
+    cursor: pointer;
     transform: translateY(60px);
     transition: opacity 0.8s ease, transform 0.8s ease;
 }
