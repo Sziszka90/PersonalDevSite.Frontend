@@ -11,8 +11,24 @@
     transition: color 0.2s ease;
 }
 
-.grid-container .card:hover mat-card-title:first-child i {
-    color: variables.$green-color;
+@media (hover: hover) and (pointer: fine) {
+    .grid-container .card:hover mat-card-title:first-child i {
+        color: variables.$green-color;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .grid-container .card:hover {
+        background-color: variables.$card-background-color;
+        box-shadow: none;
+        transform: none;
+    }
+
+    .grid-container .card:active {
+        mat-card-title:first-child i {
+            color: variables.$green-color;
+        }
+    }
 }
 
 // Responsiveness

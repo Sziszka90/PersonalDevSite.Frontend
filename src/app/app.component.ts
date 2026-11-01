@@ -25,6 +25,7 @@ import { BlogComponent } from './blog/blog.component';
 })
 export class AppComponent {
   title = 'Szilard Ferencz | Fullstack Engineer';
+  scrollArrowPressed = false;
 
   scrollToTop(): void {
     const behavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches

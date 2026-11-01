@@ -7,6 +7,12 @@
     <app-blog></app-blog>
     <app-contact></app-contact>
 </main>
-<button class="scroll-to-top" type="button" aria-label="Scroll to top" title="Scroll to top" (click)="scrollToTop()">
+<button class="scroll-to-top" type="button" aria-label="Scroll to top" title="Scroll to top"
+        [class.pressed]="scrollArrowPressed"
+        (pointerdown)="scrollArrowPressed = true"
+        (pointerup)="scrollArrowPressed = false"
+        (pointercancel)="scrollArrowPressed = false"
+        (pointerleave)="scrollArrowPressed = false"
+        (click)="scrollToTop()">
     <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
 </button>

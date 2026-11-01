@@ -22,7 +22,8 @@ main {
     font-size: 1.25rem;
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 
-    &:active {
+    &:active,
+    &.pressed {
         transform: scale(0.96);
         border-color: variables.$green-color;
         background: variables.$green-color;

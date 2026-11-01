@@ -82,11 +82,13 @@
     transform: translateY(0);
 }
 
-.experience-item:hover {
-    background-color: variables.$card-hover-color;
-    transform: translateY(-5px);
-    transition: transform 0.2s ease;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+@media (hover: hover) and (pointer: fine) {
+    .experience-item:hover {
+        background-color: variables.$card-hover-color;
+        transform: translateY(-5px);
+        transition: transform 0.2s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
 }
 
 // Fonts
@@ -107,8 +109,24 @@ h2 {
     }
 }
 
-.experience-item:hover .position {
-    color: variables.$green-color;
+@media (hover: hover) and (pointer: fine) {
+    .experience-item:hover .position {
+        color: variables.$green-color;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .experience-item:hover {
+        background-color: variables.$card-background-color;
+        box-shadow: none;
+        transform: none;
+    }
+
+    .experience-item:active {
+        .position {
+            color: variables.$green-color;
+        }
+    }
 }
 
 mat-card-header {
