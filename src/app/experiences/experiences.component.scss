@@ -121,12 +121,10 @@ h2 {
         box-shadow: none;
         transform: none;
     }
+}
 
-    .experience-item:active {
-        .position {
-            color: variables.$green-color;
-        }
-    }
+.experience-item.selected .position {
+    color: variables.$green-color;
 }
 
 mat-card-header {

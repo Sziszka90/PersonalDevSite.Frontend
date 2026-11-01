@@ -24,11 +24,10 @@
         transform: none;
     }
 
-    .grid-container .card:active {
-        mat-card-title:first-child i {
-            color: variables.$green-color;
-        }
-    }
+}
+
+.grid-container .card.selected mat-card-title:first-child i {
+    color: variables.$green-color;
 }
 
 // Responsiveness
