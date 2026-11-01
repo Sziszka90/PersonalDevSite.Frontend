@@ -25,4 +25,12 @@ import { BlogComponent } from './blog/blog.component';
 })
 export class AppComponent {
   title = 'Szilard Ferencz | Fullstack Engineer';
+
+  scrollToTop(): void {
+    const behavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? 'auto'
+      : 'smooth';
+
+    window.scrollTo({ top: 0, behavior });
+  }
 }
