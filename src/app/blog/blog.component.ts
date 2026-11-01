@@ -29,22 +29,6 @@ const MEDIUM_PROFILE_URL = 'https://medium.com/@szilard.fer';
 const MEDIUM_FEED_URL = 'https://medium.com/feed/@szilard.fer';
 const MEDIUM_FEED_PROXY_URL = 'https://api.rss2json.com/v1/api.json?rss_url=';
 const PORTFOLIO_POST_URL = 'https://medium.com/@szilard.fer/portfolio-finance-app-660489e9846f';
-const PORTFOLIO_POST_THUMBNAIL = 'https://miro.medium.com/v2/resize:fit:1600/format:webp/1*PQiEV_hs9OOx4n3BFGgmDw.jpeg';
-const AI_ASSISTANT_POST_THUMBNAIL = 'https://miro.medium.com/v2/resize:fit:1400/format:webp/1*BMcBvxWNPwGDCa_YfI-ZWw.jpeg';
-const FALLBACK_FEATURED_POST: MediumPost = {
-  title: 'Building a Full-Stack Finance Application with .NET, Angular, Azure and AI',
-  link: PORTFOLIO_POST_URL,
-  description: 'A full-stack finance application covering architecture, security, AI integration, and cloud deployment.',
-  thumbnail: PORTFOLIO_POST_THUMBNAIL,
-  pubDate: '2026-08-04T00:00:00Z'
-};
-const FALLBACK_RECENT_POSTS: MediumPost[] = [{
-  title: 'Building a Personal AI Assistant with RAG, Azure AI Search, and Azure OpenAI',
-  link: 'https://medium.com/@szilard.fer/building-a-personal-ai-assistant-with-rag-azure-ai-search-and-azure-openai-42874f903dcb',
-  description: 'How a personal AI assistant uses RAG, hybrid search, Azure AI Search, and streaming responses.',
-  thumbnail: AI_ASSISTANT_POST_THUMBNAIL,
-  pubDate: '2026-08-04T00:00:00Z'
-}];
 
 @Component({
   selector: 'app-blog',
@@ -59,29 +43,33 @@ export class BlogComponent implements OnInit {
   private readonly matDialog = inject(MatDialog);
 
   readonly mediumProfileUrl = MEDIUM_PROFILE_URL;
-  readonly featuredPost = signal<MediumPost | null>(FALLBACK_FEATURED_POST);
-  readonly posts = signal<MediumPost[]>(FALLBACK_RECENT_POSTS);
+  readonly featuredPost = signal<MediumPost | null>(null);
+  readonly posts = signal<MediumPost[]>([]);
 
   ngOnInit(): void {
     this.http.get<MediumFeedResponse>(this.feedUrl()).subscribe({
       next: feed => {
-        if (!Array.isArray(feed.items)) return;
+        if (!Array.isArray(feed.items)) {
+          this.featuredPost.set(null);
+          this.posts.set([]);
+          return;
+        }
 
         const validPosts = feed.items
           .map(item => this.parseFeedItem(item))
           .filter((post): post is MediumPost => post !== null);
-        if (validPosts.length === 0) return;
-
-        const featured = validPosts.find(post => this.normalizeLink(post.link) === PORTFOLIO_POST_URL)
-          ?? FALLBACK_FEATURED_POST;
+        const featured = validPosts.find(post => this.normalizeLink(post.link) === PORTFOLIO_POST_URL) ?? null;
         const recentPosts = validPosts
           .filter(post => this.normalizeLink(post.link) !== PORTFOLIO_POST_URL)
           .slice(0, 3);
 
         this.featuredPost.set(featured);
-        this.posts.set(recentPosts.length > 0 ? recentPosts : FALLBACK_RECENT_POSTS);
+        this.posts.set(recentPosts);
       },
-      error: () => { /* Keep the published posts visible when the feed proxy is unavailable. */ }
+      error: () => {
+        this.featuredPost.set(null);
+        this.posts.set([]);
+      }
     });
   }
 
