@@ -36,6 +36,19 @@ const MEDIUM_PROFILE_URL = 'https://medium.com/@szilard.fer';
 const MEDIUM_FEED_CACHE_KEY = 'personal-dev-site.blog-feed.v1';
 const MEDIUM_FEED_CACHE_TTL_MS = 5 * 60 * 1000;
 const PORTFOLIO_POST_URL = 'https://medium.com/@szilard.fer/portfolio-finance-app-660489e9846f';
+const FALLBACK_FEATURED_POST: MediumPost = {
+  title: 'Portfolio Finance App',
+  link: PORTFOLIO_POST_URL,
+  description: 'Explore the finance app and try it with sample bank statements from September to December 2026.',
+  thumbnail: '',
+  pubDate: ''
+};
+const SAMPLE_STATEMENTS = [
+  { month: 'September 2026', file: 'finance_statement_september_2026.pdf' },
+  { month: 'October 2026', file: 'finance_statement_october_2026.pdf' },
+  { month: 'November 2026', file: 'finance_statement_november_2026.pdf' },
+  { month: 'December 2026', file: 'finance_statement_december_2026.pdf' }
+];
 
 @Component({
   selector: 'app-blog',
@@ -50,7 +63,8 @@ export class BlogComponent implements OnInit {
   private readonly matDialog = inject(MatDialog);
 
   readonly mediumProfileUrl = MEDIUM_PROFILE_URL;
-  readonly featuredPost = signal<MediumPost | null>(null);
+  readonly sampleStatements = SAMPLE_STATEMENTS;
+  readonly featuredPost = signal<MediumPost | null>(FALLBACK_FEATURED_POST);
   readonly posts = signal<MediumPost[]>([]);
 
   ngOnInit(): void {
@@ -148,7 +162,7 @@ export class BlogComponent implements OnInit {
   }
 
   private setFeed(feed: CachedBlogFeed): void {
-    this.featuredPost.set(feed.featuredPost);
+    this.featuredPost.set(feed.featuredPost ?? FALLBACK_FEATURED_POST);
     this.posts.set(feed.posts);
   }
 

@@ -30,11 +30,20 @@
                   <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
                   View Project
                 </button>
-                <a class="custom-button bounce-button" href="assets/sample_bank_transaction.pdf" download="sample_bank_transaction.pdf">
-                  <i class="fa-solid fa-download" aria-hidden="true"></i>
-                  Sample Bank Statement
-                </a>
               </div>
+              <section class="statement-downloads" aria-labelledby="statement-downloads-title">
+                <h4 id="statement-downloads-title">Try it with sample statements</h4>
+                <p class="default-font">Download a monthly statement to explore the finance app.</p>
+                <div class="statement-list">
+                  @for (statement of sampleStatements; track statement.file) {
+                    <a class="statement-link default-font" [href]="'assets/statements/' + statement.file" [download]="statement.file">
+                      <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>
+                      <span>{{ statement.month }}</span>
+                      <i class="fa-solid fa-download" aria-hidden="true"></i>
+                    </a>
+                  }
+                </div>
+              </section>
               <a class="read-link default-font" [href]="post.link" target="_blank" rel="noopener noreferrer">
                 Read article
                 <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
