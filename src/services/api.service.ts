@@ -15,14 +15,18 @@ export class ApiService {
     return this.http.post<ChatResponse>(`${this.apiUrl}`, body);
   }
 
-  async streamChat(message: string, history: ChatRequest['history'], onDelta: (delta: string) => void): Promise<void> {
+  async streamChat(
+    message: string,
+    previousResponseId: ChatRequest['previousResponseId'],
+    onDelta: (delta: string) => void,
+    onResponseId: (responseId: string) => void): Promise<void> {
     const response = await fetch(this.apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'text/event-stream'
       },
-      body: JSON.stringify({ message, history })
+      body: JSON.stringify({ message, previousResponseId })
     });
 
     if (!response.ok || !response.body) {
@@ -41,16 +45,19 @@ export class ApiService {
       buffer = events.pop() ?? '';
 
       for (const event of events) {
-        if (this.handleStreamEvent(event, onDelta)) return;
+        if (this.handleStreamEvent(event, onDelta, onResponseId)) return;
       }
     }
 
     if (buffer.trim()) {
-      this.handleStreamEvent(buffer, onDelta);
+      this.handleStreamEvent(buffer, onDelta, onResponseId);
     }
   }
 
-  private handleStreamEvent(event: string, onDelta: (delta: string) => void): boolean {
+  private handleStreamEvent(
+    event: string,
+    onDelta: (delta: string) => void,
+    onResponseId: (responseId: string) => void): boolean {
     const lines = event.split(/\r?\n/);
     const eventType = lines.find(line => line.startsWith('event:'))?.slice(6).trim();
 
@@ -63,7 +70,12 @@ export class ApiService {
 
     if (!data || data === '[DONE]') return data === '[DONE]';
 
-    const parsed: { delta?: unknown } = JSON.parse(data);
+    const parsed: { delta?: unknown; responseId?: unknown } = JSON.parse(data);
+    if (eventType === 'response_id' && typeof parsed.responseId === 'string') {
+      onResponseId(parsed.responseId);
+      return false;
+    }
+
     if (typeof parsed.delta === 'string') {
       onDelta(parsed.delta);
     }

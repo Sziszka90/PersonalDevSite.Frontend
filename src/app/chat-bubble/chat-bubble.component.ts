@@ -2,7 +2,6 @@ import { Component, inject, ViewChild, ElementRef, signal, ChangeDetectionStrate
 import { ApiService } from '../../services/api.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ChatMessage } from '../../models/conversation.dto';
 
 @Component({
   selector: 'app-chat-bubble',
@@ -25,7 +24,7 @@ export class ChatBubbleComponent {
   messages = signal<{ text: string, sender: 'user' | 'assistant' }[]>([
     { text: 'Hi! I\'m the AI chat assistant for this personal website. Feel free to ask me anything about Szilard\'s experience, skills, or projects!', sender: 'assistant' }
   ]);
-  private conversationHistory: ChatMessage[] = [];
+  private previousResponseId: string | null = null;
   dragOffsetX = 0;
   dragOffsetY = 0;
   dragging = false;
@@ -85,7 +84,6 @@ export class ChatBubbleComponent {
   sendMessage() {
     if (!this.message.trim() || this.loading()) return;
     const msgToSend = this.message;
-    const history = [...this.conversationHistory];
     this.message = '';
     this.loading.set(true);
     this.messages.update(messages => [
@@ -96,7 +94,7 @@ export class ChatBubbleComponent {
 
     let assistantText = '';
     let responseTopShown = false;
-    this.apiService.streamChat(msgToSend, history, delta => {
+    this.apiService.streamChat(msgToSend, this.previousResponseId, delta => {
       assistantText += delta;
       this.messages.update(messages => {
         const updatedMessages = [...messages];
@@ -115,6 +113,8 @@ export class ChatBubbleComponent {
         responseTopShown = true;
         this.scrollToResponseTop();
       }
+    }, responseId => {
+      this.previousResponseId = responseId;
     }).then(() => {
       this.messages.update(messages => {
         const updatedMessages = [...messages];
@@ -124,11 +124,6 @@ export class ChatBubbleComponent {
         }
         return updatedMessages;
       });
-      this.conversationHistory = [
-        ...history,
-        { role: 'user', content: msgToSend },
-        { role: 'assistant', content: assistantText || 'No response' }
-      ];
       this.loading.set(false);
       if (!responseTopShown) this.scrollToResponseTop();
     }).catch(() => {
